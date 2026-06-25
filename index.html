@@ -1,13 +1,72 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>KHTB 库存管理系统</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KH TAOBAO</title>
+
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<h1>KHTB 库存管理系统</h1>
+<header class="header">
 
-<p>网站已经成功上线 🚀</p>
+    <div class="logo-section">
+
+        <div class="title-group">
+            <h1>KH TAOBAO</h1>
+            <h2>KH 淘宝</h2>
+        </div>
+
+    </div>
+
+    <button class="admin-btn">
+        Admin Login
+    </button>
+
+</header>
+
+<section class="search-section">
+
+    <input
+        type="text"
+        id="searchInput"
+        placeholder="Search Item / 搜索物品"
+    >
+
+</section>
+
+<main id="inventoryContainer">
+
+</main>
+
+<section class="activity-section">
+
+    <h3>
+        Recent Activity
+        <br>
+        最近操作记录
+    </h3>
+
+    <div id="activityContainer"></div>
+
+</section>
+
+<footer>
+
+    <p>
+        If you find any bug or abnormal issue,
+        please send screenshot to Z Y.
+    </p>
+
+    <p>
+        如发现任何异常或BUG，请截图发送给 Z Y。
+    </p>
+
+</footer>
+
+<script type="module" src="script.js"></script>
 
 </body>
 </html>
