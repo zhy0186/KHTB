@@ -1,79 +1,112 @@
 import { db } from "./firebase.js";
 
 import {
-collection,
-getDocs,
-doc,
-updateDoc
+  collection,
+  getDocs,
+  doc,
+  updateDoc
 } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
 const inventoryContainer =
-document.getElementById("inventoryContainer");
+  document.getElementById("inventoryContainer");
 
 // 读取库存
 async function loadInventory() {
 
-inventoryContainer.innerHTML =
-"<p>Loading...</p>";
+  inventoryContainer.innerHTML =
+    "<p>Loading...</p>";
 
-const querySnapshot =
-await getDocs(collection(db, "inventory"));
+  try {
 
-inventoryContainer.innerHTML = "";
+    const querySnapshot =
+      await getDocs(collection(db, "inventory"));
 
-querySnapshot.forEach((docSnap) => {
+    inventoryContainer.innerHTML = "";
 
-```
-const item = docSnap.data();
+    querySnapshot.forEach((docSnap) => {
 
-const card = document.createElement("div");
+      const item = docSnap.data();
 
-card.className = "inventory-card";
+      const card =
+        document.createElement("div");
 
-card.innerHTML = `
-  <h3>${item.name_en}</h3>
-  <p>${item.name_cn}</p>
+      card.className =
+        "inventory-card";
 
-  <div class="stock">
-    ${item.stock} pcs
-  </div>
+      card.innerHTML = `
+        <h3>${item.name_en}</h3>
+        <p>${item.name_cn}</p>
 
-  ${
-    item.stock < 10
-      ? '<div class="low-stock">⚠ Low Stock</div>'
-      : ''
+        <div class="stock">
+          ${item.stock} pcs
+        </div>
+
+        ${
+          item.stock < 10
+            ? '<div class="low-stock">⚠ Low Stock</div>'
+            : ''
+        }
+
+        <button class="take-btn">
+          -1
+        </button>
+      `;
+
+      const takeBtn =
+        card.querySelector(".take-btn");
+
+      takeBtn.addEventListener(
+        "click",
+        async () => {
+
+          if (item.stock <= 0) {
+            alert("Out of Stock");
+            return;
+          }
+
+          try {
+
+            await updateDoc(
+              doc(
+                db,
+                "inventory",
+                docSnap.id
+              ),
+              {
+                stock:
+                  item.stock - 1
+              }
+            );
+
+            loadInventory();
+
+          } catch (error) {
+
+            console.error(error);
+
+            alert(
+              "Failed to update stock."
+            );
+
+          }
+
+        }
+      );
+
+      inventoryContainer.appendChild(
+        card
+      );
+
+    });
+
+  } catch (error) {
+
+    console.error(error);
+
+    inventoryContainer.innerHTML =
+      "<p>Error Loading Inventory</p>";
+
   }
-
-  <button class="take-btn">
-    TEST BUTTON
-  </button>
-`;
-
-const takeBtn =
-  card.querySelector(".take-btn");
-
-takeBtn.addEventListener("click", async () => {
-
-  if (item.stock <= 0) {
-    alert("Out of Stock");
-    return;
-  }
-
-  await updateDoc(
-    doc(db, "inventory", docSnap.id),
-    {
-      stock: item.stock - 1
-    }
-  );
-
-  loadInventory();
-
-});
-
-inventoryContainer.appendChild(card);
-```
-
-});
 
 }
 
