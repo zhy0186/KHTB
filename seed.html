@@ -1,1 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Import Inventory</title>
+</head>
 
+<body style="font-family:Arial;text-align:center;margin-top:100px;">
+
+<h1>KH TAOBAO</h1>
+
+<h2>Import Inventory</h2>
+
+<button id="importBtn"
+style="padding:15px 40px;font-size:20px;cursor:pointer;">
+Import Inventory
+</button>
+
+<script type="module">
+
+import { db } from "./firebase.js";
+
+import {
+collection,
+getDocs,
+addDoc
+} from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
+
+const items = [
+
+{ name_cn:"拉伸缠绕膜 黑色", name_en:"Black Stretch Film", stock:0 },
+
+{ name_cn:"拉伸缠绕膜 白色", name_en:"White Stretch Film", stock:0 },
+
+{ name_cn:"透明胶带", name_en:"Clear Packing Tape", stock:0 },
+
+{ name_cn:"美纹纸胶带（窄）", name_en:"Masking Tape (Narrow)", stock:0 },
+
+{ name_cn:"美纹纸胶带（宽）", name_en:"Masking Tape (Wide)", stock:0 },
+
+{ name_cn:"中号印刷塑料袋", name_en:"Printed Plastic Bag (Medium)", stock:0 },
+
+{ name_cn:"小号印刷塑料袋", name_en:"Printed Plastic Bag (Small)", stock:0 },
+
+{ name_cn:"大号印刷塑料袋", name_en:"Printed Plastic Bag (Large)", stock:0 },
+
+{ name_cn:"黑色垃圾袋 大号", name_en:"Black Garbage Bag (Large)", stock:0 },
+
+{ name_cn:"黑色垃圾袋 中号", name_en:"Black Garbage Bag (Medium)", stock:0 },
+
+{ name_cn:"Zip Lock Plastic Bags 小", name_en:"Zip Lock Plastic Bag (Small)", stock:0 },
+
+{ name_cn:"Zip Lock Plastic Bags 中", name_en:"Zip Lock Plastic Bag (Medium)", stock:0 },
+
+{ name_cn:"Zip Lock Plastic Bags 大", name_en:"Zip Lock Plastic Bag (Large)", stock:0 },
+
+{ name_cn:"A4纸", name_en:"A4 Paper", stock:0 },
+
+{ name_cn:"A5纸", name_en:"A5 Paper", stock:0 },
+
+{ name_cn:"先进先出标签", name_en:"First-In, First-Out Stickers", stock:0 },
+
+{ name_cn:"扫描标签", name_en:"Scan Sticker", stock:0 },
+
+{ name_cn:"PCS数量标签", name_en:"PCS Inside Sticker", stock:0 }
+
+];
+
+document.getElementById("importBtn").onclick = async ()=>{
+
+const snapshot = await getDocs(collection(db,"inventory"));
+
+const existing=[];
+
+snapshot.forEach(doc=>{
+
+existing.push(doc.data().name_cn);
+
+});
+
+let count=0;
+
+for(const item of items){
+
+if(!existing.includes(item.name_cn)){
+
+await addDoc(collection(db,"inventory"),{
+
+...item,
+
+updatedAt:new Date().toISOString().split("T")[0]
+
+});
+
+count++;
+
+}
+
+}
+
+alert("Import Completed! Added "+count+" items.");
+
+};
+
+</script>
+
+</body>
+</html>
