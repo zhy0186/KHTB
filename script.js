@@ -2,7 +2,9 @@ import { db } from "./firebase.js";
 
 import {
   collection,
-  getDocs
+  getDocs,
+  doc,
+  updateDoc
 } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
 const inventoryContainer =
@@ -19,9 +21,9 @@ async function loadInventory() {
 
   inventoryContainer.innerHTML = "";
 
-  querySnapshot.forEach((doc) => {
+  querySnapshot.forEach((docSnap) => {
 
-    const item = doc.data();
+    const item = docSnap.data();
 
     const card = document.createElement("div");
 
@@ -40,7 +42,32 @@ async function loadInventory() {
         ? '<div class="low-stock">⚠ Low Stock</div>'
         : ''
       }
+
+      <button class="take-btn">
+        -1
+      </button>
     `;
+
+    const takeBtn =
+      card.querySelector(".take-btn");
+
+    takeBtn.addEventListener("click", async () => {
+
+      if (item.stock <= 0) {
+        alert("Out of Stock");
+        return;
+      }
+
+      await updateDoc(
+        doc(db, "inventory", docSnap.id),
+        {
+          stock: item.stock - 1
+        }
+      );
+
+      loadInventory();
+
+    });
 
     inventoryContainer.appendChild(card);
 
