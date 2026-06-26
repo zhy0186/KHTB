@@ -44,7 +44,7 @@ async function loadInventory() {
       }
 
       <button class="take-btn">
-        -1
+       TEST BUTTON
       </button>
     `;
 
