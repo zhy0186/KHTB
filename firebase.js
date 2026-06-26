@@ -23,16 +23,3 @@ const db = getFirestore(app);
 
 // Export
 export { db };
-.take-btn {
-    background: #0F4C81;
-    color: white;
-    border: none;
-    padding: 10px 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-top: 10px;
-}
-
-.take-btn:hover {
-    opacity: 0.9;
-}
