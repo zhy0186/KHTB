@@ -1,18 +1,30 @@
 import { db } from "./firebase.js";
 
-let editingId = null;
+import {
+    addActivity,
+    loadActivity
+} from "./activity.js";
 
 import {
-  collection,
-  getDocs,
-  doc,
-  updateDoc,
-  addDoc,
-  deleteDoc
+    takeItem
+} from "./inventory.js";
+
+import {
+    collection,
+    getDocs,
+    doc,
+    updateDoc,
+    addDoc,
+    deleteDoc
 } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
+
+let editingId = null;
 
 const inventoryContainer =
   document.getElementById("inventoryContainer");
+
+  const activityContainer =
+  document.getElementById("activityContainer");
 
 const isAdmin =
   localStorage.getItem("isAdmin") === "true";
@@ -121,17 +133,21 @@ ${isAdmin ? `
 
         }
 
-        await updateDoc(
+        await takeItem(
+    docSnap.id,
+    item.stock,
+    qty
+);
 
-          doc(db, "inventory", docSnap.id),
+await addActivity(
+    "Take",
+    item.name_en,
+    qty
+);
 
-          {
-            stock: item.stock - qty
-          }
+loadInventory();
+loadActivity(activityContainer);
 
-        );
-
-        loadInventory();
 
       });
 
@@ -159,17 +175,27 @@ ${isAdmin ? `
             return;
           }
 
-          await updateDoc(
+          const newStock = item.stock + qty;
 
-            doc(db, "inventory", docSnap.id),
+if (newStock > 999) {
 
-            {
-              stock: item.stock + qty
-            }
+    alert("Maximum stock is 999.");
 
-          );
+    return;
 
-          loadInventory();
+}
+
+await updateDoc(
+
+    doc(db, "inventory", docSnap.id),
+
+    {
+        stock: newStock
+    }
+
+);
+
+loadInventory();
 
         });
         
@@ -238,6 +264,7 @@ deleteBtn.addEventListener("click", async () => {
 }
 
 loadInventory();
+loadActivity(activityContainer);
 // ======================
 // Add Item
 // ======================
@@ -286,6 +313,14 @@ saveItemBtn.addEventListener("click", async () => {
     const en = nameEN.value.trim();
 
     const stock = parseInt(stockInput.value);
+
+    if (stock > 999) {
+
+    alert("Maximum stock is 999.");
+
+    return;
+
+}
 
     if (!cn || !en || isNaN(stock) || stock < 0) {
 
