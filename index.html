@@ -14,24 +14,36 @@
 
     <div class="logo-section">
 
-        <div class="title-group">
-            <h1>KH TAOBAO</h1>
-            <h2>KH 淘宝</h2>
-        </div>
+    <img src="logo.png" alt="KH Logo" class="logo">
+
+    <div class="title-group">
+        <h1>KH TAOBAO</h1>
+        <h2>KH 淘宝</h2>
+    </div>
+
+</div>
 
     </div>
 
     <div class="header-buttons">
 
-        <button id="addItemBtn" class="admin-btn" style="display:none;">
-            + Add Item
-        </button>
-        
-        <button id="adminBtn" class="admin-btn">
-            Login
-        </button>
+    <button id="exportExcelBtn" class="admin-btn">
+        📥 Excel
+    </button>
 
-    </div>
+    <button id="exportPdfBtn" class="admin-btn">
+        📄 PDF
+    </button>
+
+    <button id="addItemBtn" class="admin-btn" style="display:none;">
+        + Add Item
+    </button>
+
+    <button id="adminBtn" class="admin-btn">
+        Login
+    </button>
+
+</div>
 
 </header>
 
@@ -136,6 +148,12 @@
     </div>
 
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 
 <script type="module" src="script.js"></script>
 <script type="module" src="admin.js"></script>

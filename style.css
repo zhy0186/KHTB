@@ -383,3 +383,21 @@ footer{
 .action-row button{
     flex:1;
 }
+/* ===========================
+          LOGO
+=========================== */
+.logo-section{
+    display:flex;
+    align-items:center;
+    gap:20px;
+}
+.logo{
+    width:70px;
+    height:70px;
+    object-fit:contain;
+    transition: transform 0.25s ease;
+}
+
+.logo:hover{
+    transform: scale(1.05);
+}
