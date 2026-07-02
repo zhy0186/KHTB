@@ -3,7 +3,10 @@ import { db } from "./firebase.js";
 import {
     collection,
     getDocs,
-    addDoc
+    addDoc,
+    query,
+    orderBy,
+    limit
 } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
 export async function addActivity(action, item, qty) {
@@ -14,7 +17,10 @@ export async function addActivity(action, item, qty) {
             action,
             item,
             qty,
-            time: new Date().toLocaleString()
+           time: new Date().toLocaleString(),
+
+timestamp: Date.now()
+
         }
     );
 
@@ -22,8 +28,17 @@ export async function addActivity(action, item, qty) {
 
 export async function loadActivity(activityContainer) {
 
-    const querySnapshot =
-        await getDocs(collection(db, "activity"));
+    const q = query(
+
+        collection(db, "activity"),
+
+        orderBy("timestamp", "desc"),
+
+        limit(10)
+
+    );
+
+    const querySnapshot = await getDocs(q);
 
     activityContainer.innerHTML = "";
 

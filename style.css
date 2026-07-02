@@ -165,6 +165,42 @@ body{
 
 }
 
+.activity-container{
+
+    max-height:320px;
+
+    overflow-y:auto;
+
+    border:1px solid #ddd;
+
+    border-radius:10px;
+
+    background:#fff;
+
+    padding:15px;
+
+}
+
+.activity-container::-webkit-scrollbar{
+
+    width:8px;
+
+}
+
+.activity-container::-webkit-scrollbar-thumb{
+
+    background:#bfbfbf;
+
+    border-radius:10px;
+
+}
+
+.activity-container::-webkit-scrollbar-thumb:hover{
+
+    background:#999;
+
+}
+
 /* ===========================
    Footer
 =========================== */

@@ -495,37 +495,64 @@ pdf.text(`Total Items : ${rows.length}`, 14, 42);
 
 pdf.text(`Total Stock : ${totalStock} pcs`, 14, 49);
 
-pdf.text(`Low Stock   : ${lowStock} Items`, 14, 56);
+pdf.setTextColor(220,53,69);
+
+pdf.text(`Low Stock : ${lowStock} Items`,14,56);
+
+pdf.setTextColor(0,0,0);
 
 
         // ===== Table =====
-        pdf.autoTable({
+       pdf.autoTable({
 
-            startY: 64,
+    startY: 64,
 
-            head: [["No.", "Item", "Stock"]],
+    head: [["No.", "Item", "Stock"]],
 
-            body: rows,
+    body: rows,
 
-            theme: "grid",
+    theme: "grid",
 
-            headStyles: {
-                halign: "center"
-            },
+    headStyles: {
+        halign: "center"
+    },
 
-            bodyStyles: {
-                halign: "center"
-            },
+    bodyStyles: {
+        halign: "center"
+    },
 
-            columnStyles: {
+    columnStyles: {
 
-                1: {
-                    halign: "left"
-                }
+        1: {
+            halign: "left"
+        }
 
-            }
+    },
 
-        });
+    didParseCell: function (data) {
+
+    // 只处理表格内容
+    if (data.section === "body") {
+
+        const stock = Number(data.row.raw[2]);
+
+        if (stock < 10) {
+
+            // 整行变红
+            data.cell.styles.textColor = [200, 0, 0];
+
+        } else {
+
+            // 整行黑色
+            data.cell.styles.textColor = [0, 0, 0];
+
+        }
+
+    }
+
+}
+
+});
 
         // ===== Footer =====
         const pageHeight = pdf.internal.pageSize.height;
